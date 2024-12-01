@@ -1,161 +1,214 @@
 {
-	"info": {
-		"_postman_id": "72428f3c-3c00-41e1-b262-53eb5761183d",
-		"name": "MiniParranderosNoSQL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "19767625",
-		"_collection_link": "https://solar-spaceship-244943.postman.co/workspace/aaa~ed20b85b-f663-45c4-851e-143e241a0f31/collection/19767625-72428f3c-3c00-41e1-b262-53eb5761183d?action=share&source=collection_link&creator=19767625"
-	},
-	"item": [
-		{
-			"name": "Consulta Avanzada",
-			"item": [
-				{
-					"name": "Get Bebidas Mas Consumidas en Bares",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "http://localhost:8080/bares/mas-consumidas"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Bares",
-			"item": [
-				{
-					"name": "Read Bares",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "http://localhost:8080/bares"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Bar By ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "http://localhost:8080/bares/123456789"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Bar",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id\": 123456789,\n  \"nombre\": \"Bar Ensayo\",\n  \"ciudad\": \"Bogotá\",\n  \"presupuesto\": \"Alto\",\n  \"cant_sedes\": 2,\n  \"oferta_bebidas\": [\n    {\n      \"nombre\": \"Margarita\",\n      \"tipo\": \"coctel\",\n      \"grado_alcohol\": 10,\n      \"horario\": \"diurno\",\n      \"precio\": 20.5\n    },\n    {\n      \"nombre\": \"Cerveza\",\n      \"tipo\": \"bebida\",\n      \"grado_alcohol\": 5,\n      \"horario\": \"todos\",\n      \"precio\": 10.0\n    }\n  ]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:8080/bares/new/save"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bar",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nombre\": \"Bar Ensayo Actualizado\",\n  \"ciudad\": \"cali\",\n  \"presupuesto\": \"Medio\",\n  \"cant_sedes\": 3,\n  \"oferta_bebidas\": [\n    {\n      \"nombre\": \"Whisky\",\n      \"tipo\": \"licor\",\n      \"grado_alcohol\": 40,\n      \"horario\": \"nocturno\",\n      \"precio\": 50.0\n    }\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:8080/bares/123456789/edit/save"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Bar",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "http://localhost:8080/bares/123456789/delete"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Bebedores",
-			"item": [
-				{
-					"name": "Get Bebedores",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "http://localhost:8080/bebedores"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Bebedor By ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "http://localhost:8080/bebedores/123456"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Bebedor",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": 123456,\n    \"nombre\": \"Juan Perez\",\n    \"ciudad\": \"Bogotá\",\n    \"presupuesto\": \"Medio\",\n    \"puntos\": 100,\n    \"preferencias\": [\"Cerveza\", \"Vino\"],\n    \"bares_frecuentados\": [58, 59]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:8080/bebedores/new/save"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Bebedor",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"nombre\": \"Juan Perez Actualizado\",\n    \"ciudad\": \"Medellín\",\n    \"presupuesto\": \"Alto\",\n    \"puntos\": 200,\n    \"preferencias\": [\"Whisky\", \"Tequila\"],\n    \"bares_frecuentados\": [103, 104]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:8080/bebedores/123456/edit/save"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Bebedor",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "http://localhost:8080/bebedores/123456/delete"
-					},
-					"response": []
-				}
-			]
-		}
-	]
+    "info": {
+        "_postman_id": "72428f3c-3c00-41e1-b262-53eb5761183d",
+        "name": "SuperAndesNoSQL",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+        "_exporter_id": "19767625"
+    },
+    "item": [
+        {
+            "name": "Sucursal",
+            "item": [
+                {
+                    "name": "Get Sucursales",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/sucursales"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Sucursal By ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/sucursales/{id}"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Sucursal",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"123456789\",\n  \"nombre\": \"Sucursal Central\",\n  \"ciudad\": \"Bogotá\",\n  \"direccion\": \"Calle 123 #45-67\",\n  \"telefono\": \"1234567\",\n  \"tamano\": 2000\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/sucursales/new/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Sucursal",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nombre\": \"Sucursal Actualizada\",\n  \"ciudad\": \"Medellín\",\n  \"direccion\": \"Calle 456 #78-90\",\n  \"telefono\": \"7654321\",\n  \"tamano\": 2500\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/sucursales/{id}/edit/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Sucursal",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": "http://localhost:8080/sucursales/{id}/delete"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Bodega",
+            "item": [
+                {
+                    "name": "Get Bodegas",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/bodegas"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Bodega By ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/bodegas/{id}"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Bodega",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"bodega001\",\n  \"nombre\": \"Bodega Central\",\n  \"tamano\": 500,\n  \"capacidad\": 10000,\n  \"costoPromedio\": 2000,\n  \"sucursalId\": \"123456789\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/bodegas/new/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Bodega",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nombre\": \"Bodega Actualizada\",\n  \"tamano\": 600,\n  \"capacidad\": 12000,\n  \"costoPromedio\": 2500,\n  \"sucursalId\": \"123456789\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/bodegas/{id}/edit/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Bodega",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": "http://localhost:8080/bodegas/{id}/delete"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Producto",
+            "item": [
+                {
+                    "name": "Get Productos",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/productos"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Producto By CodigoBarras",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "http://localhost:8080/productos/{codigoBarras}"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Producto",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"codigoBarras\": \"123456789\",\n  \"nombre\": \"Producto 1\",\n  \"costoBodega\": 500,\n  \"precioVenta\": 700,\n  \"presentacion\": \"Caja\",\n  \"cantidadPresentacion\": 10,\n  \"unidadMedida\": \"unidad\",\n  \"volumenEmpaque\": 100,\n  \"pesoEmpaque\": 50,\n  \"fechaExpiracion\": \"2024-12-31\",\n  \"categoriaId\": \"cat001\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/productos/new/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Producto",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nombre\": \"Producto Actualizado\",\n  \"costoBodega\": 600,\n  \"precioVenta\": 800,\n  \"presentacion\": \"Bolsa\",\n  \"cantidadPresentacion\": 15,\n  \"unidadMedida\": \"unidad\",\n  \"volumenEmpaque\": 120,\n  \"pesoEmpaque\": 60\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": "http://localhost:8080/productos/{codigoBarras}/edit/save"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Producto",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": "http://localhost:8080/productos/{codigoBarras}/delete"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
 }
