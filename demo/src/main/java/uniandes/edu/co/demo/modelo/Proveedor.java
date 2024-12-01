@@ -3,7 +3,7 @@ package uniandes.edu.co.demo.modelo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "proveedores")  // Nombre de la colección en MongoDB
+@Document(collection = "Proveedor")  // Nombre de la colección en MongoDB
 public class Proveedor {
 
     @Id
