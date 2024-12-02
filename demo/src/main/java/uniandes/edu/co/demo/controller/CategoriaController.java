@@ -29,15 +29,17 @@ public class CategoriaController {
     }
 
     // Actualizar una categoría existente
-    @PostMapping("/{id}/edit/save")
+    @PutMapping("/{id}/edit")
     public ResponseEntity<String> actualizarCategoria(@PathVariable("id") String id, @RequestBody Categoria categoria) {
         try {
-            categoriaRepository.actualizarCategoria(
-                id,
-                categoria.getNombre(),
-                categoria.getDescripcion(),
-                categoria.getCaracteristicasAlmacenamiento()
-            );
+            Categoria categoriaExistente = categoriaRepository.findById(id).orElse(null);
+            if (categoriaExistente == null) {
+                return new ResponseEntity<>("Categoría no encontrada", HttpStatus.NOT_FOUND);
+            }
+            categoriaExistente.setNombre(categoria.getNombre());
+            categoriaExistente.setDescripcion(categoria.getDescripcion());
+            categoriaExistente.setCaracteristicasAlmacenamiento(categoria.getCaracteristicasAlmacenamiento());
+            categoriaRepository.save(categoriaExistente);
             return new ResponseEntity<>("Categoría actualizada exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al actualizar la categoría: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,13 +57,28 @@ public class CategoriaController {
         }
     }
 
-    // Obtener una categoría por ID o nombre
-    @GetMapping("/{identificador}")
-    public ResponseEntity<Categoria> obtenerCategoriaPorIdONombre(@PathVariable("identificador") String identificador) {
+    // Obtener una categoría por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Categoria> obtenerCategoriaPorId(@PathVariable("id") String id) {
         try {
-            Categoria categoria = categoriaRepository.buscarPorIdONombre(identificador);
+            Categoria categoria = categoriaRepository.findById(id).orElse(null);
             if (categoria != null) {
                 return ResponseEntity.ok(categoria);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // Obtener una categoría por nombre
+    @GetMapping("/buscarPorNombre/{nombre}")
+    public ResponseEntity<List<Categoria>> obtenerCategoriaPorNombre(@PathVariable("nombre") String nombre) {
+        try {
+            List<Categoria> categorias = categoriaRepository.buscarPorNombre(nombre);
+            if (categorias != null && !categorias.isEmpty()) {
+                return ResponseEntity.ok(categorias);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

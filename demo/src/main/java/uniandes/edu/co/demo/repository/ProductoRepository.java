@@ -23,7 +23,7 @@ public interface ProductoRepository extends MongoRepository<Producto, String> {
     @Query("{categoriaId: ?0}")
     List<Producto> buscarProductosPorCategoriaId(String categoriaId);
 
-    // Crear un nuevo producto
+    // Crear un nuevo producto (manteniendo la referencia)
     @Query("{ $insert: { codigoBarras: ?0, nombre: ?1, costoBodega: ?2, precioVenta: ?3, presentacion: ?4, cantidadPresentacion: ?5, unidadMedida: ?6, volumenEmpaque: ?7, pesoEmpaque: ?8, fechaExpiracion: ?9, categoriaId: ?10, bodegasIds: ?11, proveedoresIds: ?12 } }")
     void insertarProducto(String codigoBarras, String nombre, double costoBodega, double precioVenta, String presentacion, int cantidadPresentacion, String unidadMedida, int volumenEmpaque, int pesoEmpaque, String fechaExpiracion, String categoriaId, List<String> bodegasIds, List<String> proveedoresIds);
 

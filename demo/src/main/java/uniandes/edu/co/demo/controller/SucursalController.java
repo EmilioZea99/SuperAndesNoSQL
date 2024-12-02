@@ -19,15 +19,20 @@ public class SucursalController {
     private SucursalRepository sucursalRepository;
 
     // Crear una nueva sucursal
-    @PostMapping("/new/save")
-    public ResponseEntity<String> crearSucursal(@RequestBody Sucursal sucursal) {
-        try {
-            sucursalRepository.save(sucursal);
-            return new ResponseEntity<>("Sucursal creada exitosamente", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al crear la sucursal: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping("/new/saveAll")
+public ResponseEntity<String> crearSucursales(@RequestBody List<Sucursal> sucursales) {
+    try {
+        for (Sucursal sucursal : sucursales) {
+            if (sucursal.getId() == null || sucursalRepository.findById(sucursal.getId()).isPresent()) {
+                return new ResponseEntity<>("Debe proporcionar un ID único para cada sucursal", HttpStatus.BAD_REQUEST);
+            }
         }
+        sucursalRepository.saveAll(sucursales);
+        return new ResponseEntity<>("Sucursales creadas exitosamente", HttpStatus.CREATED);
+    } catch (Exception e) {
+        return new ResponseEntity<>("Error al crear las sucursales: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 
     // Actualizar una sucursal existente
     @PostMapping("/{id}/edit/save")

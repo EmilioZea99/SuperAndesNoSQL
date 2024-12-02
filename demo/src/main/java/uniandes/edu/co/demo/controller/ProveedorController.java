@@ -29,21 +29,25 @@ public class ProveedorController {
     }
 
     // Actualizar un proveedor existente
-    @PostMapping("/{nit}/edit/save")
-    public ResponseEntity<String> actualizarProveedor(@PathVariable("nit") String nit, @RequestBody Proveedor proveedor) {
-        try {
-            proveedorRepository.actualizarProveedor(
-                nit,
-                proveedor.getNombre(),
-                proveedor.getDireccion(),
-                proveedor.getNombreContacto(),
-                proveedor.getTelefonoContacto()
-            );
-            return new ResponseEntity<>("Proveedor actualizado exitosamente", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al actualizar el proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+@PutMapping("/{nit}/edit/save")
+public ResponseEntity<String> actualizarProveedor(@PathVariable("nit") String nit, @RequestBody Proveedor proveedor) {
+    try {
+        Proveedor proveedorExistente = proveedorRepository.findById(nit).orElse(null);
+        if (proveedorExistente == null) {
+            return new ResponseEntity<>("Proveedor no encontrado", HttpStatus.NOT_FOUND);
         }
+        // Actualizar los datos del proveedor existente
+        proveedorExistente.setNombre(proveedor.getNombre());
+        proveedorExistente.setDireccion(proveedor.getDireccion());
+        proveedorExistente.setNombreContacto(proveedor.getNombreContacto());
+        proveedorExistente.setTelefonoContacto(proveedor.getTelefonoContacto());
+
+        proveedorRepository.save(proveedorExistente);
+        return new ResponseEntity<>("Proveedor actualizado exitosamente", HttpStatus.OK);
+    } catch (Exception e) {
+        return new ResponseEntity<>("Error al actualizar el proveedor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 
     // Obtener todos los proveedores
     @GetMapping("")

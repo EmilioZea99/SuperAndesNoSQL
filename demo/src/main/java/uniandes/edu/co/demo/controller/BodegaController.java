@@ -17,10 +17,19 @@ public class BodegaController {
     @Autowired
     private BodegaRepository bodegaRepository;
 
+    @Autowired
+    private SucursalRepository sucursalRepository;
+
     // Crear una nueva bodega
     @PostMapping("/new/save")
     public ResponseEntity<String> crearBodega(@RequestBody Bodega bodega) {
         try {
+            // Validar que la sucursalId proporcionada exista
+            Sucursal sucursal = sucursalRepository.buscarPorId(bodega.getSucursalId());
+            if (sucursal == null) {
+                return new ResponseEntity<>("La sucursal con el ID proporcionado no existe", HttpStatus.NOT_FOUND);
+            }
+
             bodegaRepository.save(bodega);
             return new ResponseEntity<>("Bodega creada exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -32,6 +41,12 @@ public class BodegaController {
     @PostMapping("/{id}/edit/save")
     public ResponseEntity<String> actualizarBodega(@PathVariable("id") String id, @RequestBody Bodega bodega) {
         try {
+            // Validar que la sucursalId proporcionada exista
+            Sucursal sucursal = sucursalRepository.buscarPorId(bodega.getSucursalId());
+            if (sucursal == null) {
+                return new ResponseEntity<>("La sucursal con el ID proporcionado no existe", HttpStatus.NOT_FOUND);
+            }
+
             bodegaRepository.actualizarBodega(
                 id,
                 bodega.getNombre(),
@@ -76,7 +91,11 @@ public class BodegaController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> eliminarBodega(@PathVariable("id") String id) {
         try {
-            bodegaRepository.eliminarBodegaPorId(id);
+            Bodega bodega = bodegaRepository.buscarPorId(id);
+            if (bodega == null) {
+                return new ResponseEntity<>("Bodega no encontrada", HttpStatus.NOT_FOUND);
+            }
+            bodegaRepository.delete(bodega);
             return new ResponseEntity<>("Bodega eliminada exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al eliminar la bodega: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -19,6 +19,6 @@ public interface OrdenCompraRepository extends MongoRepository<OrdenCompra, Stri
     OrdenCompra buscarPorId(String id);
 
     // Crear una nueva orden de compra
-    @Query("{ $insert: { _id: ?0, sucursalId: ?1, proveedorId: ?2, fechaCreacion: ?3, fechaEsperadaEntrega: ?4, estado: ?5, detalles: ?6 } }")
-    void insertarOrdenCompra(String id, String sucursalId, String proveedorId, String fechaCreacion, String fechaEsperadaEntrega, String estado, List<DetalleOrden> detalles);
+    @Query("{ $insert: { _id: ?0, sucursalId: ?1, proveedorId: ?2, fechaCreacion: ?3, fechaEsperadaEntrega: ?4, estado: ?5, detalleOrden: ?6 } }")
+    void insertarOrdenCompra(String id, String sucursalId, String proveedorId, String fechaCreacion, String fechaEsperadaEntrega, String estado, List<DetalleOrden> detalleOrden);
 }

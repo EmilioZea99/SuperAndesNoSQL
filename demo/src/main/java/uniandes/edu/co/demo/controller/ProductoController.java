@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import uniandes.edu.co.demo.modelo.Producto;
+import uniandes.edu.co.demo.modelo.Categoria;
 import uniandes.edu.co.demo.repository.ProductoRepository;
+import uniandes.edu.co.demo.repository.CategoriaRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -19,10 +21,19 @@ public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
     // Crear un nuevo producto
     @PostMapping("/new/save")
     public ResponseEntity<String> crearProducto(@RequestBody Producto producto) {
         try {
+            // Verificar que la categoría proporcionada exista
+            Categoria categoria = categoriaRepository.findById(producto.getCategoriaId()).orElse(null);
+            if (categoria == null) {
+                return new ResponseEntity<>("La categoría con el ID proporcionado no existe", HttpStatus.NOT_FOUND);
+            }
+
             productoRepository.save(producto);
             return new ResponseEntity<>("Producto creado exitosamente", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -31,24 +42,35 @@ public class ProductoController {
     }
 
     // Actualizar un producto existente
-    @PostMapping("/{codigoBarras}/edit/save")
+    @PutMapping("/{codigoBarras}/edit")
     public ResponseEntity<String> actualizarProducto(@PathVariable("codigoBarras") String codigoBarras, @RequestBody Producto producto) {
         try {
-            productoRepository.actualizarProducto(
-                codigoBarras,
-                producto.getNombre(),
-                producto.getCostoBodega(),
-                producto.getPrecioVenta(),
-                producto.getPresentacion(),
-                producto.getCantidadPresentacion(),
-                producto.getUnidadMedida(),
-                producto.getVolumenEmpaque(),
-                producto.getPesoEmpaque(),
-                producto.getFechaExpiracion().toString(),
-                producto.getCategoriaId(),
-                producto.getBodegasIds(),
-                producto.getProveedoresIds()
-            );
+            Producto productoExistente = productoRepository.findById(codigoBarras).orElse(null);
+            if (productoExistente == null) {
+                return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+            }
+
+            // Verificar que la categoría proporcionada exista
+            Categoria categoria = categoriaRepository.findById(producto.getCategoriaId()).orElse(null);
+            if (categoria == null) {
+                return new ResponseEntity<>("La categoría con el ID proporcionado no existe", HttpStatus.NOT_FOUND);
+            }
+
+            // Actualizar los campos del producto
+            productoExistente.setNombre(producto.getNombre());
+            productoExistente.setCostoBodega(producto.getCostoBodega());
+            productoExistente.setPrecioVenta(producto.getPrecioVenta());
+            productoExistente.setPresentacion(producto.getPresentacion());
+            productoExistente.setCantidadPresentacion(producto.getCantidadPresentacion());
+            productoExistente.setUnidadMedida(producto.getUnidadMedida());
+            productoExistente.setVolumenEmpaque(producto.getVolumenEmpaque());
+            productoExistente.setPesoEmpaque(producto.getPesoEmpaque());
+            productoExistente.setFechaExpiracion(producto.getFechaExpiracion());
+            productoExistente.setCategoriaId(producto.getCategoriaId());
+            productoExistente.setBodegasIds(producto.getBodegasIds());
+            productoExistente.setProveedoresIds(producto.getProveedoresIds());
+
+            productoRepository.save(productoExistente);
             return new ResponseEntity<>("Producto actualizado exitosamente", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al actualizar el producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,6 +129,7 @@ public class ProductoController {
         }
     }
 
+    // Métodos adicionales para consultas avanzadas
     @GetMapping("/rango-precio")
     public List<Producto> obtenerProductosPorRangoDePrecio(@RequestParam double precioMin, @RequestParam double precioMax) {
         return productoRepository.buscarPorRangoDePrecio(precioMin, precioMax);
@@ -120,11 +143,6 @@ public class ProductoController {
     @GetMapping("/fecha-expiracion-inferior")
     public List<Producto> obtenerProductosPorFechaExpiracionInferior(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fecha) {
         return productoRepository.buscarPorFechaExpiracionInferior(fecha);
-    }
-
-    @GetMapping("/categoria")
-    public List<Producto> obtenerProductosPorCategoria(@RequestParam String categoriaId) {
-        return productoRepository.buscarPorCategoriaId(categoriaId);
     }
 
     @GetMapping("/bodega")
