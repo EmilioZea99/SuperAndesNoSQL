@@ -1,6 +1,9 @@
 package uniandes.edu.co.demo.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,9 @@ public class BodegaController {
 
     @Autowired
     private SucursalRepository sucursalRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
 
     // Crear una nueva bodega
     @PostMapping("/new/save")
@@ -101,4 +107,47 @@ public class BodegaController {
             return new ResponseEntity<>("Error al eliminar la bodega: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Obtener el inventario de productos en una sucursal (RFC2)
+    @GetMapping("/inventario/{sucursalId}")
+    public ResponseEntity<List<Map<String, Object>>> obtenerInventarioPorSucursal(@PathVariable("sucursalId") String sucursalId) {
+        try {
+            // Buscar todas las bodegas asociadas a la sucursal
+            List<Bodega> bodegas = bodegaRepository.buscarBodegasPorSucursalId(sucursalId);
+
+            if (bodegas.isEmpty()) {
+                return new ResponseEntity("No se encontraron bodegas para la sucursal proporcionada", HttpStatus.NOT_FOUND);
+            }
+
+            List<Map<String, Object>> inventario = new ArrayList<>();
+
+            // Iterar por cada bodega y buscar los productos almacenados en ella
+            for (Bodega bodega : bodegas) {
+                List<Producto> productos = productoRepository.buscarPorBodegaId(bodega.getId());
+
+                for (Producto producto : productos) {
+                    // Crear un mapa con la información del producto en la bodega
+                    // Crear un mapa con la información del producto en la bodega
+                    Map<String, Object> inventarioProducto = new HashMap<>();
+                    inventarioProducto.put("nombreBodega", bodega.getNombre());  // Añadir el nombre de la bodega
+                    inventarioProducto.put("nombreProducto", producto.getNombre());
+                    inventarioProducto.put("cantidadActual", producto.getCantidadPresentacion());
+                    inventarioProducto.put("cantidadMinima", 10);  // Cantidad mínima requerida (esto podría ser un campo dinámico en Bodega)
+                    inventarioProducto.put("costoPromedio", bodega.getCostoPromedio());
+
+
+                    // Añadir el producto al inventario
+                    inventario.add(inventarioProducto);
+                }
+            }
+
+            return ResponseEntity.ok(inventario);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
+
+    
+

@@ -34,4 +34,6 @@ public interface BodegaRepository extends MongoRepository<Bodega, String> {
     // Eliminar una bodega por su ID
     @Query(value = "{_id: ?0}", delete = true)
     void eliminarBodegaPorId(String id);
+
+    
 }
